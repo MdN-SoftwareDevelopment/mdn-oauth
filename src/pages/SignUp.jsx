@@ -13,7 +13,7 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [image, setImage] = useState('/src/assets/addImage.png');
+  const [image, setImage] = useState('/assets/addImage.png');
   const [user, setUser] = useState({});
 
   const imageRef = useRef();
