@@ -32,7 +32,7 @@ module.exports = {
     'arrow-body-style': 'off',
     'prefer-arrow-callback': 'off',
     'react/prop-types': 'off',
-    'max-len': [1, { code: 100 }],
+    'max-len': [1, { code: 120 }],
     'comma-dangle': ['warn'],
     'space-before-function-paren': 0,
     'multiline-ternary': 0,
