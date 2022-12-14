@@ -21,6 +21,7 @@ export const verifyExist = async (idApp, email) => {
 };
 
 export const verifyCredentials = async (idApp, email, password) => {
+  password = window.btoa(password);
   try {
     const response = await verifyCredentialsUser(idApp, email, password);
     return (

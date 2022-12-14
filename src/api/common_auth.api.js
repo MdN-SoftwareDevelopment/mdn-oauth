@@ -14,5 +14,5 @@ export const verifyExistUser = async (idApp, email) =>
 export const verifyCredentialsUser = async (idApp, email, password) =>
   await API.get(`/user/verify/credentials/${idApp}/${email}/${password}`);
 
-export const getUser = async (idApp, email) =>
+export const getTokenUser = async (idApp, email) =>
   await API.get(`/user/token/${idApp}/${email}`);
