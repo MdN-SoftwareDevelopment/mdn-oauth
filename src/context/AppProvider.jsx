@@ -5,7 +5,7 @@ import { AppContext } from './AppContext';
 export const useApp = () => {
   const context = useContext(AppContext);
   if (context === undefined) {
-    throw new Error('useTasks must be used within a TaskContextProvider');
+    throw new Error('UseApp must be used within a AppContextProvider');
   }
   return context;
 };
