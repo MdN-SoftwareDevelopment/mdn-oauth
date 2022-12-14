@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getApplication, getUserToken } from '../api/common_auth.api';
+import { getApplication, getUser } from '../api/common_auth.api';
 import Input from '../components/Input';
 import {
   validateEmail,
@@ -34,20 +34,16 @@ export default function SignUp() {
     if (!validateEmail(email)) {
       alert('Email is not valid');
       return;
-    } else if (!validatePassword(password)) {
+    }
+    if (!validatePassword(password)) {
       alert('Password is not valid');
       return;
     }
-    const verifyPassword = await verifyCredentials(
-      params.idApp,
-      email,
-      password
-    );
-    if (!verifyPassword) {
+    if (await verifyCredentials(params.idApp, email, password)) {
       alert('Email or Password is not correct');
       return;
     }
-    const token = await getUserToken(params.idApp, email);
+    const token = await getUser(params.idApp, email);
     window.open(`${app.redirect_url + token.data.token}`, '_self');
   };
 
@@ -100,8 +96,8 @@ export default function SignUp() {
         <div className='flex justify-end'>
           <Link
             to={`/signup/${params.idApp}`}
-            className='mt-2 font-semibold text-[20px] hover:underline active:transform 
-            active:scale-95 transition duration-100'
+            className='mt-2 font-semibold text-[20px] hover:underline 
+            active:transform active:scale-95 transition duration-100'
           >
             No tienes una cuenta aun?
           </Link>

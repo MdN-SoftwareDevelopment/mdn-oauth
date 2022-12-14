@@ -4,5 +4,5 @@
 
 @font-face {
   font-family: 'Aclonica';
-  src: url('./fonts/Aclonica-Regular.ttf');
+  src: url('/fonts/Aclonica-Regular.ttf')
 }

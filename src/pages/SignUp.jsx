@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getApplication, postUser, getUserToken } from '../api/common_auth.api';
+import { getApplication, getUser, postUser } from '../api/common_auth.api';
 import Input from '../components/Input';
 import {
   validateEmail,
   validatePassword,
-  verifyExistUser
+  verifyExist
 } from '../utils/validation';
 
 export default function SignUp() {
@@ -27,7 +27,7 @@ export default function SignUp() {
       email,
       password,
       user_image: image,
-      id_rol: app.id_default_user
+      id_role: app.id_default_user
     });
   }, [email, password, image]);
 
@@ -57,17 +57,23 @@ export default function SignUp() {
     e.preventDefault();
     if (!validateEmail(email)) {
       alert('Email is not valid');
-    } else if (await verifyExistUser(params.idApp, email)) {
-      alert('Email already exists');
-    } else if (!validatePassword(password)) {
-      alert('Password is not valid');
-    } else if (confirmPassword !== password) {
-      alert('Passwords do not match');
-    } else {
-      await postUser(user);
-      const token = await getUserToken(params.idApp, email);
-      window.open(`${app.redirect_url + token.data.token}`, '_self');
+      return;
     }
+    if (await verifyExist(params.idApp, email)) {
+      alert('Email already exists');
+      return;
+    }
+    if (!validatePassword(password)) {
+      alert('Password is not valid');
+      return;
+    }
+    if (confirmPassword !== password) {
+      alert('Passwords do not match');
+      return;
+    }
+    await postUser(user);
+    const token = await getUser(params.idApp, email);
+    window.open(`${app.redirect_url + token.data.token}`, '_self');
   };
 
   return (
@@ -90,8 +96,9 @@ export default function SignUp() {
       >
         <div className='flex flex-col'>
           <img
-            className='flex justify-center w-[200px] m-auto cursor-pointer mb-[-15px]
-              rounded-full active:transform active:scale-95 transition duration-100'
+            className='flex justify-center w-[200px] m-auto cursor-pointer 
+            mb-[-15px] rounded-full active:transform active:scale-95 
+            transition duration-100'
             onClick={focusImage}
             width='300'
             src={image}
@@ -145,8 +152,8 @@ export default function SignUp() {
         <div className='flex justify-end'>
           <Link
             to={`/login/${params.idApp}`}
-            className='mt-2 font-semibold text-[20px] hover:underline active:transform 
-            active:scale-95 transition duration-100'
+            className='mt-2 font-semibold text-[20px] hover:underline 
+            active:transform active:scale-95 transition duration-100'
           >
             Ya tienes una cuenta?
           </Link>
