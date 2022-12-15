@@ -17,7 +17,7 @@ export default function LoadLogin() {
     setApp(JSON.parse(sessionStorage.getItem('app')));
   }, []);
 
-  const loginUser = async e => {
+  const loginUser = e => {
     e.preventDefault();
     if (!validateEmail(email)) {
       alert('Email is not valid');
