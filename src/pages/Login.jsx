@@ -1,10 +1,8 @@
 import { useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useApp } from '../context/AppProvider';
+import { getApplication } from '../api/common_auth.api';
 
 export default function Login() {
-  const { loadApp } = useApp();
-
   const params = useParams();
   const navigate = useNavigate();
 
@@ -17,7 +15,8 @@ export default function Login() {
   );
 
   useEffect(() => {
-    loadApp(params.idApp).then(_user => {
+    getApplication(params.idApp).then(app => {
+      sessionStorage.setItem('app', JSON.stringify(app.data));
       redirect('/login');
     });
   }, []);

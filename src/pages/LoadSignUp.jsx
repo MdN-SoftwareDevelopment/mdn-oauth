@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getTokenUser, postUser } from '../api/common_auth.api';
 import Input from '../components/Input';
-import { useApp } from '../context/AppProvider';
 import {
   validateEmail,
   validatePassword,
@@ -10,7 +9,7 @@ import {
 } from '../utils/validation';
 
 export default function LoadSignUp() {
-  const { app } = useApp();
+  const [app, setApp] = useState({});
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -20,6 +19,7 @@ export default function LoadSignUp() {
   const imageRef = useRef();
 
   useEffect(() => {
+    setApp(JSON.parse(sessionStorage.getItem('app')));
     setUser({
       email,
       password,
@@ -65,7 +65,7 @@ export default function LoadSignUp() {
     window.open(`${app.redirect_url + token.data.token}`, '_self');
   };
 
-  return app.name === undefined ? (
+  return app === null ? (
     <div
       className='grid bg-white p-10 
       rounded-[24px] shadow-2xl m-auto text-black font-bold

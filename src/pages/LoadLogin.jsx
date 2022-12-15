@@ -1,8 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getTokenUser } from '../api/common_auth.api';
 import Input from '../components/Input';
-import { useApp } from '../context/AppProvider';
 import {
   validateEmail,
   validatePassword,
@@ -10,9 +9,13 @@ import {
 } from '../utils/validation';
 
 export default function LoadLogin() {
-  const { app } = useApp();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [app, setApp] = useState({});
+
+  useEffect(() => {
+    setApp(JSON.parse(sessionStorage.getItem('app')));
+  }, []);
 
   const loginUser = async e => {
     e.preventDefault();
@@ -32,7 +35,7 @@ export default function LoadLogin() {
     window.open(`${app.redirect_url + token.data.token}`, '_self');
   };
 
-  return app.name === undefined ? (
+  return app === null ? (
     <div
       className='grid bg-white p-10 
       rounded-[24px] shadow-2xl m-auto text-black font-bold
