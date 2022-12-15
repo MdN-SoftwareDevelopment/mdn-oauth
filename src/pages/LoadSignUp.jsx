@@ -48,7 +48,7 @@ export default function LoadSignUp() {
       alert('Email is not valid');
       return;
     }
-    if (await verifyExist(app.idApp, email)) {
+    if (await verifyExist(sessionStorage.getItem('id'), email)) {
       alert('Email already exists');
       return;
     }
@@ -61,7 +61,7 @@ export default function LoadSignUp() {
       return;
     }
     await postUser(user);
-    const token = await getTokenUser(app.idApp, email);
+    const token = await getTokenUser(sessionStorage.getItem('id'), email);
     window.open(`${app.redirect_url + token.data.token}`, '_self');
   };
 

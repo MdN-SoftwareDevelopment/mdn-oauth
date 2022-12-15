@@ -27,11 +27,11 @@ export default function LoadLogin() {
       alert('Password is not valid');
       return;
     }
-    if (await verifyCredentials(app.idApp, email, password)) {
+    if (await verifyCredentials(sessionStorage.getItem('id'), password)) {
       alert('Email or Password is not correct');
       return;
     }
-    const token = await getTokenUser(app.idApp, email);
+    const token = await getTokenUser(sessionStorage.getItem('id'), email);
     window.open(`${app.redirect_url + token.data.token}`, '_self');
   };
 
