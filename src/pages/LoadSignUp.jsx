@@ -42,27 +42,31 @@ export default function LoadSignUp() {
     imageRef.current.click();
   };
 
-  const signUpUser = async e => {
+  const signUpUser = e => {
     e.preventDefault();
     if (!validateEmail(email)) {
       alert('Email is not valid');
       return;
     }
-    if (await verifyExist(sessionStorage.getItem('id'), email)) {
-      alert('Email already exists');
-      return;
-    }
-    if (!validatePassword(password)) {
-      alert('Password is not valid');
-      return;
-    }
-    if (confirmPassword !== password) {
-      alert('Passwords do not match');
-      return;
-    }
-    await postUser(user);
-    const token = await getTokenUser(sessionStorage.getItem('id'), email);
-    window.open(`${app.redirect_url + token.data.token}`, '_self');
+    verifyExist(sessionStorage.getItem('id'), email).then(res => {
+      if (res) {
+        alert('Email already exists');
+        return;
+      }
+      if (!validatePassword(password)) {
+        alert('Password is not valid');
+        return;
+      }
+      if (confirmPassword !== password) {
+        alert('Passwords do not match');
+        return;
+      }
+      postUser(user).then(_user => {
+        getTokenUser(sessionStorage.getItem('id'), email).then(token => {
+          window.open(`${app.redirect_url + token.data.token}`, '_self');
+        });
+      });
+    });
   };
 
   return app === null ? (

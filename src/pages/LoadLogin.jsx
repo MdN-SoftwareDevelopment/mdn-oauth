@@ -27,14 +27,17 @@ export default function LoadLogin() {
       alert('Password is not valid');
       return;
     }
-    if (
-      await verifyCredentials(sessionStorage.getItem('id'), email, password)
-    ) {
-      alert('Email or Password is not correct');
-      return;
-    }
-    const token = await getTokenUser(sessionStorage.getItem('id'), email);
-    window.open(`${app.redirect_url + token.data.token}`, '_self');
+    verifyCredentials(sessionStorage.getItem('id'), email, password).then(
+      res => {
+        if (res) {
+          alert('Email or Password is not correct');
+          return;
+        }
+        getTokenUser(sessionStorage.getItem('id'), email).then(token => {
+          window.open(`${app.redirect_url + token.data.token}`, '_self');
+        });
+      }
+    );
   };
 
   return app === null ? (
