@@ -14,7 +14,10 @@ export default function LoadLogin() {
   const [app, setApp] = useState({});
 
   useEffect(() => {
-    setApp(JSON.parse(sessionStorage.getItem('app')));
+    setApp({
+      ...JSON.parse(localStorage.getItem('app')),
+      id: localStorage.getItem('id')
+    });
   }, []);
 
   const loginUser = e => {
@@ -27,17 +30,15 @@ export default function LoadLogin() {
       alert('Password is not valid');
       return;
     }
-    verifyCredentials(sessionStorage.getItem('id'), email, password).then(
-      res => {
-        if (res) {
-          alert('Email or Password is not correct');
-          return;
-        }
-        getTokenUser(sessionStorage.getItem('id'), email).then(token => {
-          window.open(`${app.redirect_url + token.data.token}`, '_self');
-        });
+    verifyCredentials(app.id, email, password).then(res => {
+      if (res) {
+        alert('Email or Password is not correct');
+        return;
       }
-    );
+      getTokenUser(app.id, email).then(token => {
+        window.open(`${app.redirect_url + token.data.token}`, '_self');
+      });
+    });
   };
 
   return app === null ? (

@@ -19,7 +19,10 @@ export default function LoadSignUp() {
   const imageRef = useRef();
 
   useEffect(() => {
-    setApp(JSON.parse(sessionStorage.getItem('app')));
+    setApp({
+      ...JSON.parse(localStorage.getItem('app')),
+      id: localStorage.getItem('id')
+    });
     setUser({
       email,
       password,
@@ -48,7 +51,7 @@ export default function LoadSignUp() {
       alert('Email is not valid');
       return;
     }
-    verifyExist(sessionStorage.getItem('id'), email).then(res => {
+    verifyExist(app.id, email).then(res => {
       if (res) {
         alert('Email already exists');
         return;
@@ -62,7 +65,7 @@ export default function LoadSignUp() {
         return;
       }
       postUser(user).then(_user => {
-        getTokenUser(sessionStorage.getItem('id'), email).then(token => {
+        getTokenUser(app.id, email).then(token => {
           window.open(`${app.redirect_url + token.data.token}`, '_self');
         });
       });

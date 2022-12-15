@@ -16,8 +16,8 @@ export default function Login() {
 
   useEffect(() => {
     getApplication(params.idApp).then(app => {
-      sessionStorage.setItem('app', JSON.stringify(app.data));
-      sessionStorage.setItem('id', params.idApp);
+      localStorage.setItem('app', JSON.stringify(app.data));
+      localStorage.setItem('id', params.idApp);
       redirect('/login');
     });
   }, []);
