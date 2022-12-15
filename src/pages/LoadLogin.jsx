@@ -27,7 +27,9 @@ export default function LoadLogin() {
       alert('Password is not valid');
       return;
     }
-    if (await verifyCredentials(sessionStorage.getItem('id'), password)) {
+    if (
+      await verifyCredentials(sessionStorage.getItem('id'), email, password)
+    ) {
       alert('Email or Password is not correct');
       return;
     }
